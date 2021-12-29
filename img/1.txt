@@ -1,0 +1,73 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct ListNode
+{
+    int val;
+    struct ListNode *next;
+};
+struct ListNode* reverseList(struct ListNode *head)
+{
+    struct ListNode *p1,*p2,*p3;
+    int i=1;
+    p1=head;
+    if(p1->next==NULL)/*链表长度为1时*/
+    {
+        return head;
+    }
+    p2=p1->next;
+    if(p2->next==NULL)/*链表长度为2时*/
+    {
+        p2->next=p1;
+        p1->next=NULL;
+        return p2;
+    }
+    while(p2->next!=NULL)/*利用三指针进行倒序*/
+    {
+        p3=p2->next;
+        if(i)
+        {
+            p1->next=NULL;
+            i--;
+        }
+        p2->next=p1;
+        p1=p2;
+        p2=p3;
+    }
+    p2->next=p1;
+    return p2;/*返回链表末端地址*/
+}
+int main()
+{
+    struct ListNode *head,*p1,*p2;
+    int n,i;
+    head=NULL;
+    printf("请输入链表长度\n");
+    scanf("%d",&n);/*输入链表长度*/
+    printf("请输入链表\n");
+    for(i=0;i<n;i++)/*构造动态链表并输入*/
+    {
+        p2=(struct ListNode*)malloc(sizeof(struct ListNode));
+        scanf("%d",&p2->val);
+        if(i==0)
+        {
+            head=p2;
+        }
+        else
+        {
+            p1->next=p2;
+        }
+        if(i==n-1)
+        {
+            p2->next=NULL;
+        }
+        p1=p2;
+    }
+    head=reverseList(head);/*执行函数返回逆序后新的头地址*/
+    printf("倒序后输出为\n");
+    while(head!=NULL)/*输出结果*/
+    {
+        printf("%d ",head->val);
+        head=head->next;
+    }
+    return 0;
+}
